@@ -1,0 +1,62 @@
+= ActiveMerchantOgone
+
+A plugin for Ogone support in ActiveRecord.
+
+== Installation
+
+=== Requirements
+
+First you need the ActiveMerchant gem / rails-plugin installed. More info about ActiveMerchant installation can be found at http://activemerchant.rubyforge.org/.
+
+=== As a Rails plugin
+
+To install ActiveMerchantOgone in your rails app you can just do:
+
+	> ./script/plugin install git://github.com/DefV/active_merchant_ogone.git
+
+
+== Configuration
+
+As Ogone works with in and out signatures, you will have to set these as constants in your configuration file.
+
+    OGONE_ACCOUNT = 'account_name'
+    OGONE_SHA1_SIGNATURE_OUT = '094598439859385938958398494' # Item 3.2 of the technical information
+	OGONE_SHA1_SIGNATURE_IN  = '094598439859385938958398494' # Item 4.4 of the technical information
+
+
+== Example Usage
+
+Once you've configured the Ogone settings you need to set up a leaving page with in your view:
+
+    <% payment_service_for @order.ogone_id, OGONE_ACCOUNT,
+						:amount 	=> @order.price * 100 # needs to be in cents
+						:currency 	=> 'EUR',
+						:service	=> :ogone do |service|
+	%>
+	
+  	  <%	service.redirect :accepturl => checkout_url(@order),
+	    					 :cancelurl => checkout_url(@order),
+		    				 :declineurl => checkout_url(@order),
+ 			    			 :exceptionurl => checkout_url(@order)
+      %>
+
+      <%= submit_tag "Pay with Ogone!" %>
+    <% end %>
+
+And in your controller you should have an enter path:
+    class CheckoutsController < ApplicationController
+		include ActiveMerchant::Billing::Integrations
+		
+		def show
+			@notification = Ogone::Notification.new(request.query_string, :signature => OGONE_SHA1_SIGNATURE_IN)
+			
+			@order = Order.find_by_ogone_id(@notification.order_id)
+			if @notification.complete?
+				@order.paid!
+			else
+				@order.failed!
+			end
+		end
+	end
+
+Copyright (c) 2009 Openminds BVBVA, released under the MIT license
