@@ -28,17 +28,17 @@ class OgoneNotificationTest < Test::Unit::TestCase
 
   def test_invalid_status_should_raise_an_error
     assert_raise(ActiveMerchant::OgoneError) {
-      notification = Ogone::Notification.new(faulty_http_raw_data, {:signature => OGONE_SHA1_SIGNATURE_IN})      
+      notification = Ogone::Notification.new(faulty_http_raw_data, {:signature => OGONE_SHA1_SIGNATURE_IN})
     }
   end
 
   private
   def successfull_http_raw_data
     "orderID=order_342&currency=EUR&amount=50&PM=CreditCard&ACCEPTANCE=test123&STATUS=9&CARDNO=XXXXXXXXXXXX1111&PAYID=2396925&NCERROR=0&BRAND=VISA&IPCTY=BE&CCCTY=US&ECI=7&CVCCheck=NO&AAVCheck=NO&VC=NO&SHASIGN=FE220C6F4492165533488E35F47F231D6BC357FC&IP=82.146.99.233"
-  end  
+  end
 
   def faulty_http_raw_data
     "orderID=order_342&currency=EUR&amount=50&PM=CreditCard&ACCEPTANCE=test123&STATUS=abc&CARDNO=XXXXXXXXXXXX1111&PAYID=2396925&NCERROR=0&BRAND=VISA&IPCTY=BE&CCCTY=US&ECI=7&CVCCheck=NO&AAVCheck=NO&VC=NO&SHASIGN=FE220C6F4492165533488E35F47F231D6BC357FC&IP=82.146.99.233"
-  end  
+  end
 
 end

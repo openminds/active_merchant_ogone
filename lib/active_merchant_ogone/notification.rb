@@ -62,22 +62,22 @@ module ActiveMerchant #:nodoc:
             95 => 'Payment processed by merchant',
             99 => 'Being processed'
           }
-          
+
           OK_STATUSSES = [4,5,9]
-          
+
           def initialize(post, options = {})
             super
-            
+
             raise OgoneError.new("Faulty Ogone result: '#{params['STATUS']}'") unless params['STATUS'].match(/^\d+$/)
 
             sign = Ogone::SHASign_in(params, options[:signature])
             raise OgoneError.new("Faulty Ogone SHA1 signature: '#{params['SHASIGN']}' != '#{sign}'") unless params['SHASIGN'] == sign
-          end        
-                    
+          end
+
           def status
             OK_STATUSSES.include?(params['STATUS'].to_i) ? 'Completed' : 'Failed'
           end
-          
+
           def status_message # needed?
             STATUS_MAPPING[params['STATUS']]
           end
@@ -85,10 +85,10 @@ module ActiveMerchant #:nodoc:
           def gross
             params['amount'].to_f * 100.0
           end
-          
+
           def complete?
             status == 'Completed'
-          end 
+          end
 
           def payment_method
             params['PM']
@@ -101,11 +101,11 @@ module ActiveMerchant #:nodoc:
           def transaction_id
             params['PAYID']
           end
-          
+
           def brand
             params['BRAND']
           end
-          
+
           def currency
             params['currency']
           end

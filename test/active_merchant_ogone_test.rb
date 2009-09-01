@@ -5,7 +5,7 @@ class ActiveMerchantOgoneTest < Test::Unit::TestCase
 
   def test_sha1_signature_out
     # input values and return value taken from BASIC documentation
-    data = {'orderID' => '1234', 
+    data = {'orderID' => '1234',
       'currency' => 'EUR',
       'amount' => 1500,
       'PSPID' => 'MyPSPID' }
@@ -17,17 +17,17 @@ class ActiveMerchantOgoneTest < Test::Unit::TestCase
 
   def test_sha1_signature_in
     # input values and return value taken from BASIC documentation
-    data = {'orderID' => '12', 
-      'currency' => 'EUR', 
-      'amount' => '15', 
-      'PM' => 'CreditCard', 
-      'ACCEPTANCE' => '1234', 
-      'STATUS' => '9', 
-      'CARDNO' => 'xxxxxxxxxxxx1111', 
-      'PAYID' => '32100123', 
-      'NCERROR' => '0', 
-      'BRAND' => 'VISA'} 
-    signature = 'Mysecretsig' 
+    data = {'orderID' => '12',
+      'currency' => 'EUR',
+      'amount' => '15',
+      'PM' => 'CreditCard',
+      'ACCEPTANCE' => '1234',
+      'STATUS' => '9',
+      'CARDNO' => 'xxxxxxxxxxxx1111',
+      'PAYID' => '32100123',
+      'NCERROR' => '0',
+      'BRAND' => 'VISA'}
+    signature = 'Mysecretsig'
     assert_equal '6DDD8C4538ACD0462837DB66F5EAB39C58086A29', Ogone.SHASign_in(data, signature)
   end
 end
