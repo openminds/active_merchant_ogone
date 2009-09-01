@@ -83,7 +83,7 @@ module ActiveMerchant #:nodoc:
           end
 
           def gross
-            params['amount'].to_f * 100.0
+            params['amount'].to_f
           end
 
           def complete?
