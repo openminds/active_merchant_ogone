@@ -83,7 +83,7 @@ module ActiveMerchant #:nodoc:
           end
 
           def status_message # needed?
-            STATUS_MAPPING[params['STATUS']]
+            STATUS_MAPPING[params['STATUS'].to_i]
           end
 
           def gross
