@@ -3,10 +3,11 @@ module ActiveMerchant #:nodoc:
     module Integrations #:nodoc:
       module Ogone
         class Helper < ActiveMerchant::Billing::Integrations::Helper
+          
           # required
-          mapping :order, 'orderID'
-          mapping :account, 'PSPID'
-          mapping :amount, 'amount'
+          mapping :order,    'orderID'
+          mapping :account,  'PSPID'
+          mapping :amount,   'amount'
           mapping :currency, 'currency'
 
           # optional - TODO
@@ -20,9 +21,9 @@ module ActiveMerchant #:nodoc:
           # mapping :shipping, ''
 
           # redirection
-          mapping :redirect, :accepturl => 'accepturl',
-                             :declineurl => 'declineurl',
-                             :cancelurl => 'cancelurl',
+          mapping :redirect, :accepturl    => 'accepturl',
+                             :declineurl   => 'declineurl',
+                             :cancelurl    => 'cancelurl',
                              :exceptionurl => 'exceptionurl'
 
           def customer(mapping = {})
@@ -33,10 +34,16 @@ module ActiveMerchant #:nodoc:
 
           # return the fields
           def form_fields
-            # add the signature
-            add_field('SHASign', Ogone.outbound_message_signature(@fields, OGONE_SHA1_SIGNATURE_OUT))
+            add_field('SHASign', outbound_message_signature)
             super
           end
+          
+        private
+          
+          def outbound_message_signature
+            Ogone.outbound_message_signature(@fields, OGONE_SHA1_SIGNATURE_OUT)
+          end
+          
         end
       end
     end
