@@ -27,34 +27,34 @@ module ActiveMerchant #:nodoc:
           #           IP=82.146.99.233
 
           STATUS_MAPPING = {
-            0 => 'Incomplete or invalid',
-            1 => 'Cancelled by client',
-            2 => 'Authorization refused',
-            4 => 'Order stored',
+            0  => 'Incomplete or invalid',
+            1  => 'Cancelled by client',
+            2  => 'Authorization refused',
+            4  => 'Order stored',
             41 => 'Waiting client payment',
-            5 => 'Authorized',
+            5  => 'Authorized',
             51 => 'Authorization waiting',
             52 => 'Authorization not known',
             55 => 'Stand-by',
             59 => 'Authoriz. to get manually',
-            6 => 'Authorized and cancelled',
+            6  => 'Authorized and cancelled',
             61 => 'Author. deletion waiting',
             62 => 'Author. deletion uncertain',
             63 => 'Author. deletion refused',
             64 => 'Authorized and cancelled',
-            7 => 'Payment deleted',
+            7  => 'Payment deleted',
             71 => 'Payment deletion pending',
             72 => 'Payment deletion uncertain',
             73 => 'Payment deletion refused',
             74 => 'Payment deleted',
             75 => 'Deletion processed by merchant',
-            8 => 'Refund',
+            8  => 'Refund',
             81 => 'Refund pending',
             82 => 'Refund uncertain',
             83 => 'Refund refused',
             84 => 'Payment declined by the acquirer',
             85 => 'Refund processed by merchant',
-            9 => 'Payment requested',
+            9  => 'Payment requested',
             91 => 'Payment processing',
             92 => 'Payment uncertain',
             93 => 'Payment refused',
@@ -65,13 +65,17 @@ module ActiveMerchant #:nodoc:
 
           OK_STATUSSES = [4,5,9]
 
-          def initialize(post, options = {})
+          def initialize(post, options={})
             super
 
-            raise OgoneError.new("Faulty Ogone result: '#{params['STATUS']}'") unless params['STATUS'].match(/^\d+$/)
+            unless params['STATUS'].match(/^\d+$/)
+              raise OgoneError, "Faulty Ogone result: '#{params['STATUS']}'"
+            end
 
             sign = Ogone::inbound_message_signature(params, options[:signature])
-            raise OgoneError.new("Faulty Ogone SHA1 signature: '#{params['SHASIGN']}' != '#{sign}'") unless params['SHASIGN'] == sign
+            unless params['SHASIGN'] == sign
+              raise OgoneError, "Faulty Ogone SHA1 signature: '#{params['SHASIGN']}' != '#{sign}'"
+            end
           end
 
           def status
@@ -113,6 +117,7 @@ module ActiveMerchant #:nodoc:
           def acknowledge
             true
           end
+          
         end
       end
     end

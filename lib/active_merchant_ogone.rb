@@ -26,8 +26,8 @@ module ActiveMerchant #:nodoc:
           end
         end
         
-        def self.notification(post, options)
-          Notification.new(post, options)
+        def self.notification(post, options={})
+          Notification.new(post, options={})
         end
         
         def self.outbound_message_signature(fields, signature)
