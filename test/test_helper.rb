@@ -4,7 +4,7 @@ require 'test/unit'
 
 class Test::Unit::TestCase
   def assert_field(field, value)
-    clean_backtrace do 
+    clean_backtrace do
       assert_equal value, @helper.fields[field]
     end
   end

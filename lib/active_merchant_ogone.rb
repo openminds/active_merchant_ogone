@@ -33,14 +33,14 @@ module ActiveMerchant #:nodoc:
             keys = ['orderID','amount','currency','PSPID']
             datastring = keys.collect{|key| fields[key]}.join('')
             Digest::SHA1.hexdigest("#{datastring}#{signature}").upcase
-          end          
+          end
 
           def SHASign_in(fields, signature)
             keys = ['orderID','currency','amount','PM','ACCEPTANCE','STATUS','CARDNO','PAYID','NCERROR','BRAND']
             datastring = keys.collect{|key| fields[key]}.join('')
             Digest::SHA1.hexdigest("#{datastring}#{signature}").upcase
-          end 
-        end         
+          end
+        end
       end
     end
   end
