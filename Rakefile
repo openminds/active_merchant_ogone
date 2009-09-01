@@ -31,6 +31,7 @@ begin
     gemspec.email = "github@defv.be"
     gemspec.homepage = "http://github.com/DefV/active_merchant_ogone/tree/master"
     gemspec.authors = ["Jan De Poorter", "Simon Menke"]
+    gemspec.add_dependency 'activemerchant', '>= 0'
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
