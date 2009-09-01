@@ -70,7 +70,7 @@ module ActiveMerchant #:nodoc:
 
             raise OgoneError.new("Faulty Ogone result: '#{params['STATUS']}'") unless params['STATUS'].match(/^\d+$/)
 
-            sign = Ogone::SHASign_in(params, options[:signature])
+            sign = Ogone::inbound_message_signature(params, options[:signature])
             raise OgoneError.new("Faulty Ogone SHA1 signature: '#{params['SHASIGN']}' != '#{sign}'") unless params['SHASIGN'] == sign
           end
 
