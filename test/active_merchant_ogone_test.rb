@@ -12,7 +12,7 @@ class ActiveMerchantOgoneTest < Test::Unit::TestCase
 
     signature = 'Mysecretsig'
 
-    assert_equal 'CC88E974F684C0804FD98BEA2FE403E9D11534BB', Ogone.SHASign_out(data, signature)
+    assert_equal 'CC88E974F684C0804FD98BEA2FE403E9D11534BB', Ogone.outbound_message_signature(data, signature)
   end
 
   def test_sha1_signature_in
@@ -28,6 +28,6 @@ class ActiveMerchantOgoneTest < Test::Unit::TestCase
       'NCERROR' => '0',
       'BRAND' => 'VISA'}
     signature = 'Mysecretsig'
-    assert_equal '6DDD8C4538ACD0462837DB66F5EAB39C58086A29', Ogone.SHASign_in(data, signature)
+    assert_equal '6DDD8C4538ACD0462837DB66F5EAB39C58086A29', Ogone.inbound_message_signature(data, signature)
   end
 end

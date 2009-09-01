@@ -34,7 +34,7 @@ module ActiveMerchant #:nodoc:
           # return the fields
           def form_fields
             # add the signature
-            add_field('SHASign', Ogone.SHASign_out(@fields, OGONE_SHA1_SIGNATURE_OUT))
+            add_field('SHASign', Ogone.outbound_message_signature(@fields, OGONE_SHA1_SIGNATURE_OUT))
             super
           end
         end

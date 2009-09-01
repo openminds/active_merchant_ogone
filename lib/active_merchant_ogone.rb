@@ -30,13 +30,13 @@ module ActiveMerchant #:nodoc:
           Notification.new(post, options)
         end
         
-        def self.SHASign_out(fields, signature)
+        def self.outbound_message_signature(fields, signature)
           keys = ['orderID','amount','currency','PSPID']
           datastring = keys.collect{|key| fields[key]}.join('')
           Digest::SHA1.hexdigest("#{datastring}#{signature}").upcase
         end
         
-        def self.SHASign_in(fields, signature)
+        def self.inbound_message_signature(fields, signature)
           keys = ['orderID','currency','amount','PM','ACCEPTANCE','STATUS','CARDNO','PAYID','NCERROR','BRAND']
           datastring = keys.collect{|key| fields[key]}.join('')
           Digest::SHA1.hexdigest("#{datastring}#{signature}").upcase
