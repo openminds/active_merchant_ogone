@@ -21,3 +21,17 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "active_merchant_ogone"
+    gemspec.summary = "A plugin for Ogone support in ActiveRecord."
+    gemspec.description = "A plugin for Ogone support in ActiveRecord. "
+    gemspec.email = "github@defv.be"
+    gemspec.homepage = "http://github.com/DefV/active_merchant_ogone/tree/master"
+    gemspec.authors = ["Jan De Poorter", "Simon Menke"]
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+end
