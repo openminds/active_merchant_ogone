@@ -31,15 +31,17 @@ module ActiveMerchant #:nodoc:
         end
         
         def self.outbound_message_signature(fields, signature)
-          keys = ['orderID','amount','currency','PSPID']
-          datastring = keys.collect{|key| fields[key]}.join('')
-          Digest::SHA1.hexdigest("#{datastring}#{signature}").upcase
+          keys = %w( orderID amount currency PSPID )
+          datastring = keys.inject('') { |m,key| m.concat(fields[key].to_s) ; m }
+          datastring.concat(signature)
+          Digest::SHA1.hexdigest(datastring).upcase
         end
         
         def self.inbound_message_signature(fields, signature)
-          keys = ['orderID','currency','amount','PM','ACCEPTANCE','STATUS','CARDNO','PAYID','NCERROR','BRAND']
-          datastring = keys.collect{|key| fields[key]}.join('')
-          Digest::SHA1.hexdigest("#{datastring}#{signature}").upcase
+          keys = %w( orderID currency amount PM ACCEPTANCE STATUS CARDNO PAYID NCERROR BRAND )
+          datastring = keys.inject('') { |m,key| m.concat(fields[key].to_s) ; m }
+          datastring.concat(signature)
+          Digest::SHA1.hexdigest(datastring).upcase
         end
         
       end
