@@ -8,13 +8,19 @@ module ActiveMerchant #:nodoc:
   module Billing #:nodoc:
     module Integrations #:nodoc:
       module Ogone
-
+        
+        mattr_accessor :inbound_signature
+        mattr_accessor :outbound_signature
+        
         mattr_accessor :test_service_url
         mattr_accessor :live_service_url
         
         self.test_service_url = 'https://secure.ogone.com/ncol/test/orderstandard.asp'
         self.live_service_url = 'https://secure.ogone.com/ncol/prod/orderstandard.asp'
         
+        def self.setup
+          yield(self)
+        end
         
         def self.service_url
           mode = ActiveMerchant::Billing::Base.integration_mode
@@ -30,14 +36,16 @@ module ActiveMerchant #:nodoc:
           Notification.new(post, options={})
         end
         
-        def self.outbound_message_signature(fields, signature)
+        def self.outbound_message_signature(fields, signature=nil)
+          signature ||= self.outbound_signature
           keys = %w( orderID amount currency PSPID )
           datastring = keys.inject('') { |m,key| m.concat(fields[key].to_s) ; m }
           datastring.concat(signature)
           Digest::SHA1.hexdigest(datastring).upcase
         end
         
-        def self.inbound_message_signature(fields, signature)
+        def self.inbound_message_signature(fields, signature=nil)
+          signature ||= self.inbound_signature
           keys = %w( orderID currency amount PM ACCEPTANCE STATUS CARDNO PAYID NCERROR BRAND )
           datastring = keys.inject('') { |m,key| m.concat(fields[key].to_s) ; m }
           datastring.concat(signature)
