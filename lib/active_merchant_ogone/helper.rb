@@ -41,7 +41,7 @@ module ActiveMerchant #:nodoc:
         private
           
           def outbound_message_signature
-            Ogone.outbound_message_signature(@fields, OGONE_SHA1_SIGNATURE_OUT)
+            Ogone.outbound_message_signature(@fields)
           end
           
         end
