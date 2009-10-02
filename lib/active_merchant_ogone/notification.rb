@@ -118,6 +118,19 @@ module ActiveMerchant #:nodoc:
             true
           end
           
+          def scoring
+            params['SCORING'].to_i if params['SCORING']
+          end
+          
+          def scoring_category
+            case params['SCO_CATEGORY']
+            when 'G' then :green
+            when 'O' then :orange
+            when 'R' then :red
+            else nil
+            end
+          end
+          
         end
       end
     end
