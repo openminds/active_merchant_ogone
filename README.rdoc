@@ -18,7 +18,7 @@ To install ActiveMerchantOgone in your rails app you can just do:
 
 To install ActiveMerchantOgone in your rails app you can just do:
 
-  config.gem 'simonmenke-active_merchant_ogone', :lib => 'active_merchant_ogone', :source => 'http://gems.github.com'
+  config.gem 'active_merchant_ogone'
 
 == Configuration
 
@@ -26,9 +26,12 @@ As Ogone works with in and out signatures, you will have to set these as constan
 
   OGONE_ACCOUNT = 'account_name'
   Ogone.setup do |c|
-    c.outbound_signature = '094598439859385938958398494' # Item 3.2 of the technical information
-    c.inbound_signature  = '094598439859385938958398494' # Item 4.4 of the technical information
+    c.outbound_signature = '094598439859385938958398494' # You can find this under "Data and origin verification" tab
+    c.inbound_signature  = '094598439859385938958398494' # You can find this under "Data and origin verification" tab
   end
+
+Make sure that Ogone is set to "Each parameter followed by the pass phrase." as hashed value (under "Global security parameters"). 
+If you don't see this setting, then you're probably already in that mode.
 
 == Example Usage
 
