@@ -8,11 +8,12 @@ class ActiveMerchantOgoneTest < Test::Unit::TestCase
     data = {'orderID'  => '1234',
             'currency' => 'EUR',
             'amount'   => 1500,
-            'PSPID'    => 'MyPSPID' }
+            'PSPID'    => 'MyPSPID',
+            'operation' => 'RES' }
 
-    signature = 'Mysecretsig'
+    signature = 'Mysecretsig1875!?'
 
-    assert_equal 'CC88E974F684C0804FD98BEA2FE403E9D11534BB',
+    assert_equal 'EB52902BCC4B50DC1250E5A7C1068ECF97751256',
       Ogone.outbound_message_signature(data, signature)
   end
 
@@ -29,9 +30,9 @@ class ActiveMerchantOgoneTest < Test::Unit::TestCase
             'NCERROR'    => '0',
             'BRAND'      => 'VISA'}
 
-    signature = 'Mysecretsig'
+    signature = 'Mysecretsig1875!?'
 
-    assert_equal '6DDD8C4538ACD0462837DB66F5EAB39C58086A29',
+    assert_equal 'B209960D5703DD1047F95A0F97655FFE5AC8BD52',
       Ogone.inbound_message_signature(data, signature)
   end
 end

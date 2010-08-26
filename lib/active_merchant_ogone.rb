@@ -9,6 +9,8 @@ module ActiveMerchant #:nodoc:
     module Integrations #:nodoc:
       module Ogone
         
+        INBOUND_ENCRYPTED_VARIABLES = %w(AAVADDRESS AAVCHECK AAVZIP ACCEPTANCE ALIAS AMOUNT BRAND CARDNO CCCTY SHA-OUT CN COMPLUS CURRENCY CVCCHECK DCC_COMMPERCENTAGE DCC_CONVAMOUNT DCC_CONVCCY DCC_EXCHRATE DCC_EXCHRATESOURCE DCC_EXCHRATETS DCC_INDICATOR DCC_MARGINPERCENTAGE DCC_VALIDHOUS DIGESTCARDNO ECI ED ENCCARDNO IP IPCTY NBREMAILUSAGE NBRIPUSAGE NBRIPUSAGE_ALLTX NBRUSAGE NCERROR ORDERID PAYID PM SCO_CATEGORY SCORING STATUS TRXDATE VC)
+        
         mattr_accessor :inbound_signature
         mattr_accessor :outbound_signature
         
@@ -38,16 +40,20 @@ module ActiveMerchant #:nodoc:
         
         def self.outbound_message_signature(fields, signature=nil)
           signature ||= self.outbound_signature
-          keys = %w( orderID amount currency PSPID )
-          datastring = keys.collect{|key| fields[key]}.join('')
-          Digest::SHA1.hexdigest("#{datastring}#{signature}").upcase
+          datastring = fields.select {|k, v| !v.blank? }.
+                              sort_by {|k, v| k.upcase }.
+                              collect{|key, value| "#{key.upcase}=#{value}#{signature}"}.join
+                              
+          Digest::SHA1.hexdigest(datastring).upcase
         end
         
         def self.inbound_message_signature(fields, signature=nil)
           signature ||= self.inbound_signature
-          keys = %w( orderID currency amount PM ACCEPTANCE STATUS CARDNO PAYID NCERROR BRAND )
-          datastring = keys.collect{|key| fields[key]}.join('')
-          Digest::SHA1.hexdigest("#{datastring}#{signature}").upcase
+          datastring = fields.select  {|k, v| !v.blank? && INBOUND_ENCRYPTED_VARIABLES.include?(k.upcase) }.
+                              sort_by {|k, v| k.upcase }.
+                              collect {|key, value| "#{key.upcase}=#{value}#{signature}"}.join
+                             
+          Digest::SHA1.hexdigest(datastring).upcase
         end
       end
     end
