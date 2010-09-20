@@ -9,7 +9,8 @@ module ActiveMerchant #:nodoc:
     module Integrations #:nodoc:
       module Ogone
         
-        INBOUND_ENCRYPTED_VARIABLES = %w(AAVADDRESS AAVCHECK AAVZIP ACCEPTANCE ALIAS AMOUNT BRAND CARDNO CCCTY SHA-OUT CN COMPLUS CURRENCY CVCCHECK DCC_COMMPERCENTAGE DCC_CONVAMOUNT DCC_CONVCCY DCC_EXCHRATE DCC_EXCHRATESOURCE DCC_EXCHRATETS DCC_INDICATOR DCC_MARGINPERCENTAGE DCC_VALIDHOUS DIGESTCARDNO ECI ED ENCCARDNO IP IPCTY NBREMAILUSAGE NBRIPUSAGE NBRIPUSAGE_ALLTX NBRUSAGE NCERROR ORDERID PAYID PM SCO_CATEGORY SCORING STATUS TRXDATE VC)
+        INBOUND_ENCRYPTED_VARIABLES = %w(
+  AAVADDRESS AAVCHECK AAVZIP ACCEPTANCE ALIAS AMOUNT BRAND CARDNO CCCTY CN COMPLUS CREATION_STATUS CURRENCY CVCCHECK DCC_COMMPERCENTAGE DCC_CONVAMOUNT DCC_CONVCCY DCC_EXCHRATE DCC_EXCHRATESOURCE DCC_EXCHRATETS DCC_INDICATOR DCC_MARGINPERCENTAGE DCC_VALIDHOURS DIGESTCARDNO ECI ED ENCCARDNO IP IPCTY NBREMAILUSAGE NBRIPUSAGE NBRIPUSAGE_ALLTX NBRUSAGE NCERROR ORDERID PAYID PM SCO_CATEGORY SCORING SHA-OUT STATUS SUBSCRIPTION_ID TRXDATE VC )
         
         mattr_accessor :inbound_signature
         mattr_accessor :outbound_signature
@@ -50,7 +51,7 @@ module ActiveMerchant #:nodoc:
         def self.inbound_message_signature(fields, signature=nil)
           signature ||= self.inbound_signature
           datastring = fields.select  {|k, v| !v.blank? && INBOUND_ENCRYPTED_VARIABLES.include?(k.upcase) }.
-                              sort_by {|k, v| k.upcase }.
+                              sort_by {|k, v| INBOUND_ENCRYPTED_VARIABLES.index(k.upcase) }.
                               collect {|key, value| "#{key.upcase}=#{value}#{signature}"}.join
                              
           Digest::SHA1.hexdigest(datastring).upcase
