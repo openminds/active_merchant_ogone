@@ -30,7 +30,7 @@ As Ogone works with in and out signatures, you will have to set these as constan
     c.inbound_signature  = '094598439859385938958398494' # You can find this under "Data and origin verification" tab
   end
 
-Make sure that Ogone is set to "Each parameter followed by the pass phrase." as hashed value (under "Global security parameters"). 
+Make sure that Ogone is set to "Each parameter followed by the pass phrase." as hashed value (under "Global security parameters").
 If you don't see this setting, then you're probably already in that mode.
 
 == Example Usage
@@ -41,12 +41,12 @@ Once you've configured the Ogone settings you need to set up a leaving page with
       :amount   => @order.price * 100 # needs to be in cents
       :currency   => 'EUR',
       :service  => :ogone do |service| %>
-    
+
     <%  service.redirect :accepturl => checkout_url(@order),
                :cancelurl => checkout_url(@order),
                :declineurl => checkout_url(@order),
                :exceptionurl => checkout_url(@order) %>
-    
+
     <%= submit_tag "Pay with Ogone!" %>
   <% end %>
 
@@ -54,10 +54,50 @@ And in your controller you should have an enter path:
 
   class CheckoutsController < ApplicationController
     include ActiveMerchant::Billing::Integrations
-    
+
     def show
       @notification = Ogone::Notification.new(request.query_string)
-      
+
+      @order = Order.find_by_ogone_id(@notification.order_id)
+      if @notification.complete?
+        @order.paid!
+      else
+        @order.failed!
+      end
+    end
+  end
+
+== Example without setting the signatures in the config
+
+If you need to use different signatures each time you can't set them on the
+config. There's a way to set them just when you need them by doing the
+following.
+
+In your view:
+
+  <% payment_service_for @order.ogone_id, OGONE_ACCOUNT,
+      :amount      => @order.price * 100 # needs to be in cents
+      :currency    => 'EUR',
+      :credential2 => current_seller.outbound_signature,
+      :service     => :ogone do |service| %>
+
+    <%  service.redirect :accepturl => checkout_url(@order),
+               :cancelurl => checkout_url(@order),
+               :declineurl => checkout_url(@order),
+               :exceptionurl => checkout_url(@order) %>
+
+    <%= submit_tag "Pay with Ogone!" %>
+  <% end %>
+
+On your controller:
+
+  class CheckoutsController < ApplicationController
+    include ActiveMerchant::Billing::Integrations
+
+    def show
+      @notification = Ogone::Notification.new request.query_string,
+        :signature => current_seller.inbound_signature
+
       @order = Order.find_by_ogone_id(@notification.order_id)
       if @notification.complete?
         @order.paid!
