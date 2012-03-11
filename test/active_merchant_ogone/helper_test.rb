@@ -20,14 +20,14 @@ class OgoneHelperTest < Test::Unit::TestCase
     assert_field 'CN', 'Jan De Poorter'
     assert_field 'EMAIL', 'ogone@openminds.be'
   end
-  
+
   def test_operation
     @helper.operation :payment
     assert_field 'operation', 'SAL'
-    
+
     @helper.operation :auth
     assert_field 'operation', 'RES'
-    
+
     @helper.operation 'SAL'
     assert_field 'operation', 'SAL'
   end
