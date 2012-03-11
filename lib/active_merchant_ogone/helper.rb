@@ -3,7 +3,13 @@ module ActiveMerchant #:nodoc:
     module Integrations #:nodoc:
       module Ogone
         class Helper < ActiveMerchant::Billing::Integrations::Helper
-          
+          attr_reader :outbound_signature
+
+          def initialize(order, account, options = {})
+            super
+            @outbound_signature = options[:credential2]
+          end
+
           # required
           mapping :order,    'orderID'
           mapping :account,  'PSPID'
@@ -25,13 +31,13 @@ module ActiveMerchant #:nodoc:
                              :declineurl   => 'declineurl',
                              :cancelurl    => 'cancelurl',
                              :exceptionurl => 'exceptionurl'
-                             
+
           def customer(mapping = {})
             add_field('ownertelno', mapping[:phone])
             add_field('EMAIL', mapping[:email])
             add_field('CN', "#{mapping[:first_name]} #{mapping[:last_name]}")
           end
-          
+
           def operation operation
             op = case operation
             when :authorization, :auth; 'RES'
@@ -47,13 +53,13 @@ module ActiveMerchant #:nodoc:
             add_field('SHASign', outbound_message_signature)
             super
           end
-          
+
         private
-          
+
           def outbound_message_signature
-            Ogone.outbound_message_signature(@fields)
+            Ogone.outbound_message_signature(@fields, self.outbound_signature)
           end
-          
+
         end
       end
     end
