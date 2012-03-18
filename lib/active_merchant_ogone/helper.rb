@@ -26,6 +26,9 @@ module ActiveMerchant #:nodoc:
                              :cancelurl    => 'cancelurl',
                              :exceptionurl => 'exceptionurl'
                              
+          mapping :language, 'language'
+          mapping :template, 'tp'
+                             
           def customer(mapping = {})
             add_field('ownertelno', mapping[:phone])
             add_field('EMAIL', mapping[:email])
