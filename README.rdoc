@@ -46,7 +46,10 @@ Once you've configured the Ogone settings you need to set up a leaving page with
                :cancelurl => checkout_url(@order),
                :declineurl => checkout_url(@order),
                :exceptionurl => checkout_url(@order) %>
-    
+
+    <% service.language "nl_NL" %>
+    <% service.template "https://secure.ogone.com/ncol/template_standard.htm" %>
+
     <%= submit_tag "Pay with Ogone!" %>
   <% end %>
 
