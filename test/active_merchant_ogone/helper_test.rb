@@ -35,7 +35,7 @@ class OgoneHelperTest < Test::Unit::TestCase
                       :ship_adress_city => 'Den Haag',
                       :ship_adress_country_code => 'NL',
                       :ship_adress_email => 'nickdenengelsman@codedrops.nl',
-                      :ship_dob => '23/04/1987',
+                      :ship_dob => '23/04/1987'
     
     assert_field 'CIVILITY', 'Dhr.'
     assert_field 'ECOM_BILLTO_POSTAL_NAME_FIRST', 'Nick'
