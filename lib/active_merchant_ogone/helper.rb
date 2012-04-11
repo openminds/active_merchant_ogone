@@ -35,6 +35,23 @@ module ActiveMerchant #:nodoc:
             add_field('CN', "#{mapping[:first_name]} #{mapping[:last_name]}")
           end
           
+          def after_pay(mapping = {})
+            add_field('CIVILITY', mapping[:bill_civility])
+            add_field('ECOM_BILLTO_POSTAL_NAME_FIRST', mapping[:bill_first_name])
+            add_field('ECOM_BILLTO_POSTAL_NAME_LAST', mapping[:bill_last_name])
+            add_field('ECOM_BILLTO_POSTAL_STREET_NUMBER', mapping[:bill_street_number])
+            add_field('ECOM_SHIPTO_POSTAL_NAME_PREFIX', mapping[:ship_civility])
+            add_field('ECOM_SHIPTO_POSTAL_NAME_FIRST', mapping[:ship_first_name])
+            add_field('ECOM_SHIPTO_POSTAL_NAME_LAST', mapping[:ship_last_name])
+            add_field('ECOM_SHIPTO_POSTAL_STREET_LINE1', mapping[:ship_adress])
+            add_field('ECOM_SHIPTO_POSTAL_STREET_NUMBER', mapping[:ship_adress_number])
+            add_field('ECOM_SHIPTO_POSTAL_POSTALCODE', mapping[:ship_adress_zip])
+            add_field('ECOM_SHIPTO_POSTAL_CITY', mapping[:ship_adress_city])
+            add_field('ECOM_SHIPTO_POSTAL_COUNTRYCODE', mapping[:ship_adress_country_code])
+            add_field('ECOM_SHIPTO_ONLINE_EMAIL', mapping[:ship_adress_email])
+            add_field('ECOM_SHIPTO_DOB', mapping[:ship_dob])
+          end
+          
           def operation operation
             op = case operation
             when :authorization, :auth; 'RES'
