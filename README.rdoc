@@ -75,18 +75,18 @@ And in your controller you should have an enter path:
 To use AfterPay in your forms:
 
   <% service.after_pay :bill_civility => "Mr.",
-	:bill_first_name => "Nick",
-	:bill_last_name => "den Engelsman",
-	:bill_street_number => "1098",
-	:ship_civility => "Mr.",
-	:ship_first_name => "Nick",
-	:ship_last_name => "den Engelsman",
-	:ship_adress => "Laan van Meerdervoort",
-	:ship_adress_number => "1098",
-	:ship_adress_zip => "2564AZ",
-	:ship_adress_city => "Den Haag",
-	:ship_adress_country_code => "NL",
-	:ship_adress_email => "nickdenengelsman@codedrops.nl",
-	:ship_dob => "23/04/1987" %>
+		:bill_first_name => "Nick",
+		:bill_last_name => "den Engelsman",
+		:bill_street_number => "1098",
+		:ship_civility => "Mr.",
+		:ship_first_name => "Nick",
+		:ship_last_name => "den Engelsman",
+		:ship_adress => "Laan van Meerdervoort",
+		:ship_adress_number => "1098",
+		:ship_adress_zip => "2564AZ",
+		:ship_adress_city => "Den Haag",
+		:ship_adress_country_code => "NL",
+		:ship_adress_email => "nickdenengelsman@codedrops.nl",
+		:ship_dob => "23/04/1987" %>
 
 Copyright (c) 2009 Openminds BVBVA, released under the MIT license
