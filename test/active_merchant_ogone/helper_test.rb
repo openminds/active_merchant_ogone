@@ -16,9 +16,37 @@ class OgoneHelperTest < Test::Unit::TestCase
   end
 
   def test_customer_fields
-    @helper.customer :first_name => 'Jan', :last_name => 'De Poorter', :email => 'ogone@openminds.be'
+    @helper.customer :first_name => 'Jan', :last_name => 'De Poorter', :email => 'ogone@openminds.be', :civility => 'M'
     assert_field 'CN', 'Jan De Poorter'
     assert_field 'EMAIL', 'ogone@openminds.be'
+    assert_field 'CIVILITY', 'M'
+  end
+  
+  def test_afterpay_fields
+    @helper.after_pay :bill_first_name => 'Nick',
+                      :bill_last_name => 'den Engelsman',
+                      :bill_street_number => '1098',
+                      :ship_first_name => 'Nick',
+                      :ship_last_name => 'den Engelsman',
+                      :ship_adress => 'Laan van Meerdervoort',
+                      :ship_adress_number => '1098',
+                      :ship_adress_zip => '2564AZ',
+                      :ship_adress_city => 'Den Haag',
+                      :ship_adress_country_code => 'NL',
+                      :ship_dob => '23/04/1987'
+    # Billing
+    assert_field 'ECOM_BILLTO_POSTAL_NAME_FIRST', 'Nick'
+    assert_field 'ECOM_BILLTO_POSTAL_NAME_LAST', 'den Engelsman'
+    assert_field 'ECOM_BILLTO_POSTAL_STREET_NUMBER', '1098'
+    # Shipping
+    assert_field 'ECOM_SHIPTO_POSTAL_NAME_FIRST', 'Nick'
+    assert_field 'ECOM_SHIPTO_POSTAL_NAME_LAST', 'den Engelsman'
+    assert_field 'ECOM_SHIPTO_POSTAL_STREET_LINE1', 'Laan van Meerdervoort'
+    assert_field 'ECOM_SHIPTO_POSTAL_STREET_NUMBER', '1098'
+    assert_field 'ECOM_SHIPTO_POSTAL_POSTALCODE', '2564AZ'
+    assert_field 'ECOM_SHIPTO_POSTAL_CITY', 'Den Haag'
+    assert_field 'ECOM_SHIPTO_POSTAL_COUNTRYCODE', 'NL'
+    assert_field 'ECOM_SHIPTO_DOB', '23/04/1987' 
   end
   
   def test_operation
