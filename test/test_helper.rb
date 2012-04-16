@@ -15,8 +15,8 @@ require 'test/unit'
 require 'mocha'
 require 'yaml'
 
-require 'action_controller'
-require 'action_controller/test_process'
+#require 'action_dispatch'
+#require 'action_dispatch/test_process'
 require 'active_merchant/billing/integrations/action_view_helper'
 
 require 'active_merchant_ogone'
