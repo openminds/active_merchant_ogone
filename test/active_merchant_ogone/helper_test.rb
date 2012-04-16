@@ -4,7 +4,15 @@ class OgoneHelperTest < Test::Unit::TestCase
   include ActiveMerchant::Billing::Integrations
 
   def setup
-    @helper = Ogone::Helper.new('order-500','openminds', :amount => 900, :currency => 'EUR')
+    @helper = Ogone::Helper.new 'order-500','openminds', {
+      :amount => 900,
+      :currency => 'EUR',
+      :credential2 => '6df8766fb6d8275e0c0d'
+    }
+  end
+
+  def test_outbound_signature
+    assert_equal '6df8766fb6d8275e0c0d', @helper.outbound_signature 
   end
 
   def test_basic_helper_fields
@@ -20,14 +28,14 @@ class OgoneHelperTest < Test::Unit::TestCase
     assert_field 'CN', 'Jan De Poorter'
     assert_field 'EMAIL', 'ogone@openminds.be'
   end
-  
+
   def test_operation
     @helper.operation :payment
     assert_field 'operation', 'SAL'
-    
+
     @helper.operation :auth
     assert_field 'operation', 'RES'
-    
+
     @helper.operation 'SAL'
     assert_field 'operation', 'SAL'
   end
@@ -56,4 +64,5 @@ class OgoneHelperTest < Test::Unit::TestCase
     @helper.billing_address :street => 'Zilverenberg'
     assert_equal fields, @helper.fields
   end
+
 end
