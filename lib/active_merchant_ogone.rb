@@ -18,8 +18,8 @@ module ActiveMerchant #:nodoc:
         mattr_accessor :test_service_url
         mattr_accessor :live_service_url
         
-        self.test_service_url = 'https://secure.ogone.com/ncol/test/orderstandard.asp'
-        self.live_service_url = 'https://secure.ogone.com/ncol/prod/orderstandard.asp'
+        self.test_service_url = 'https://secure.ogone.com/ncol/test/orderstandard_utf8.asp'
+        self.live_service_url = 'https://secure.ogone.com/ncol/prod/orderstandard_utf8.asp'
         
         def self.setup
           yield(self)
